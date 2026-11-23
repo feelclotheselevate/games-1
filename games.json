@@ -1,0 +1,65 @@
+[
+ {
+  "key": "1942-pacific-front",
+  "title": "1942 Pacific Front",
+  "category": "action",
+  "img": "https://img.gamepix.com/games/1942-pacific-front/cover/1942-pacific-front.png?w=480",
+  "url": "games/1942-pacific-front/index.html?sid=1"
+ },
+ {
+  "key": "basket-random",
+  "title": "Basket Random",
+  "category": "twoplayer",
+  "img": "https://static.playgama.com/p-img/pg/basket-random/big_preview/796d7aa5c7c84741ae37cd1ae3da9c77?width=448",
+  "url": "games/basket-random/index.html"
+ },
+ {
+  "key": "chrome-dino-run",
+  "title": "Chrome Dino Game (Original)",
+  "category": "classic",
+  "img": "https://static.playgama.com/p-img/pg/chrome-dino-run/big_preview/bd2b0efd118a40fcbdd8cc23569918c9?width=448",
+  "url": "games/chrome-dino-run/index.html"
+ },
+ {
+  "key": "funny-shooter-2",
+  "title": "Funny Shooter 2",
+  "category": "action",
+  "img": "https://img.gamepix.com/games/funny-shooter-2/cover/funny-shooter-2.png?w=480",
+  "url": "games/funny-shooter-2/index.html?sid=1"
+ },
+ {
+  "key": "mini-soccer-3d",
+  "title": "Mini Soccer 3D",
+  "category": "sports",
+  "img": null,
+  "url": "games/mini-soccer-3d/index.html"
+ },
+ {
+  "key": "moto-x3m",
+  "title": "Moto X3M",
+  "category": "racing",
+  "img": "https://static.playgama.com/p-img/pg/moto-x3m/big_preview/6863e1c77f624087bae1d217cdf4c240?width=448",
+  "url": "games/moto-x3m/index.html"
+ },
+ {
+  "key": "solar-smash",
+  "title": "Solar Smash",
+  "category": "action",
+  "img": "https://static.playgama.com/p-img/pg/solar-smash/big-preview/678db982b1364f018e7c4fac3b1f4a44?width=448",
+  "url": "games/solar-smash/index.html"
+ },
+ {
+  "key": "steel-directive-city-zero",
+  "title": "Steel Directive: City Zero",
+  "category": "action",
+  "img": null,
+  "url": "games/steel-directive-city-zero/index.html"
+ },
+ {
+  "key": "watermelon-game",
+  "title": "Watermelon Game",
+  "category": "classic",
+  "img": "https://static.playgama.com/p-img/pg/watermelon-game/big-preview/eb9fa80422db4b34ad1c723dc95ad4e0?width=448",
+  "url": "games/watermelon-game/index.html"
+ }
+]

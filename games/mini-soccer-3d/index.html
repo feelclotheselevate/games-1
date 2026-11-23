@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script>
+    window.SDK_OPTIONS={
+      gameId:"ydb5z2mbz7bd4hfks1vdjrqp0vg91a9a",
+      onEvent:function(a){
+        switch(a.name){
+          case "SDK_GAME_PAUSE":pauseGameForAd();break;
+          case "SDK_GAME_START":resumeGameFromAd();break;
+          case "SDK_READY":break;
+        }
+      }
+    };
+    (function(a,b,c){var d=a.getElementsByTagName(b)[0];a.getElementById(c)||(a=a.createElement(b),a.id=c,a.src="https://api.gamemonetize.com/sdk.js",d.parentNode.insertBefore(a,d));})(document,"script","gamemonetize-sdk");
+    var _adPaused=false;
+    // Audio stop and input block only: the screen and game state never change here.
+    function pauseGameForAd(){_adPaused=true;if(window.MiniSoccer)MiniSoccer.beginAd();}
+    function resumeGameFromAd(){_adPaused=false;if(window.MiniSoccer)MiniSoccer.endAd(300);}
+    function showAd(){try{if(typeof sdk!=='undefined'&&sdk.showBanner!=='undefined'){sdk.showBanner();}}catch(e){}}
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#07306b">
+  <meta name="description" content="MINI SOCCER 3D: fast 4 vs 4 arcade football with slide tackles and knockout super shots and an international knockout cup.">
+  <title>MINI SOCCER 3D</title>
+  <link rel="icon" href="images/mapi.png">
+  <link rel="stylesheet" href="css/game.css">
+</head>
+<body>
+  <main id="game" tabindex="0" aria-label="MINI SOCCER 3D arcade football">
+    <canvas id="scene" width="1280" height="720" aria-label="3D football pitch"></canvas>
+    <section id="splash" class="screen active" aria-label="Start game">
+      <button id="start" aria-label="Click or tap to play"><span>CLICK OR TAP TO PLAY</span></button>
+      <img class="mapi-logo" src="images/mapi.png" alt="Mapi Games">
+      <div class="splash-note">4 VS 4 · SLIDE TACKLES · SUPER SHOTS</div>
+    </section>
+    <section id="menu" class="screen art-menu" aria-label="Main menu">
+      <div class="menu-rays" aria-hidden="true"></div>
+      <div class="menu-logo-wrap"><img class="menu-logo" src="images/logo.png" alt="MINI SOCCER 3D"><div class="menu-logo-shine" aria-hidden="true"></div></div>
+      <div class="menu-buttons">
+        <button class="chunk green" data-action="quick"><span class="icon" data-icon="play"></span><span>PLAY MATCH</span></button>
+        <button class="chunk purple" data-action="cup"><span class="icon" data-icon="trophy"></span><span>TOURNAMENT</span></button>
+        <button class="chunk slate" data-action="options"><span class="icon" data-icon="gear"></span><span>OPTIONS</span></button>
+      </div>
+      <img class="menu-mapi" src="images/mapi.png" alt="Mapi Games">
+      <p class="menu-hint">MOVE: WASD / ARROWS &nbsp; • &nbsp; PASS / TACKLE: X &nbsp; • &nbsp; SHOOT: SPACE &nbsp; • &nbsp; BOOST: SHIFT</p>
+      <button class="small-help" data-action="help" aria-label="How to play">?</button>
+    </section>
+    <section id="selection" class="screen stadium-screen" aria-label="Select teams">
+      <h1 class="game-title small-title"><span>MINI</span> SOCCER 3D <b>⚽</b></h1>
+      <h2 id="selection-title" class="ribbon">PLAY MATCH</h2>
+      <div class="selection-summary"><span id="pick-label">SELECT YOUR TEAM</span><span id="fixture">ITALY <b>VS</b> BRAZIL</span></div>
+      <div id="team-grid" role="group" aria-label="International teams"></div>
+      <div class="selection-footer">
+        <button class="chunk blue" data-action="select-back"><span data-icon="back" class="icon"></span>BACK</button>
+        <button class="chunk blue" data-action="random"><span data-icon="dice" class="icon"></span>RANDOM</button>
+        <button class="chunk green" id="confirm-team" data-action="confirm"><span data-icon="check" class="icon"></span>NEXT</button>
+      </div>
+    </section>
+    <section id="options" class="screen art-options" aria-label="Options">
+      <div class="options-panel panel">
+        <h2>OPTIONS</h2>
+        <div class="settings">
+          <div class="setting"><span data-icon="music" class="setting-icon"></span><label>MUSIC</label><button id="music-toggle" class="toggle" data-setting="music">ON</button></div>
+          <div class="setting"><span data-icon="sound" class="setting-icon"></span><label>SFX / CROWD</label><button id="sfx-toggle" class="toggle" data-setting="sfx">ON</button></div>
+          <div class="setting"><span data-icon="bars" class="setting-icon"></span><label>DIFFICULTY</label><button class="arrow" data-cycle="difficulty" data-dir="-1" aria-label="Previous difficulty">◀</button><span id="difficulty-value" class="value">NORMAL</span><button class="arrow" data-cycle="difficulty" data-dir="1" aria-label="Next difficulty">▶</button></div>
+          <div class="setting"><span data-icon="monitor" class="setting-icon"></span><label>QUALITY</label><button class="arrow" data-cycle="quality" data-dir="-1" aria-label="Previous quality">◀</button><span id="quality-value" class="value">HIGH</span><button class="arrow" data-cycle="quality" data-dir="1" aria-label="Next quality">▶</button></div>
+          <div class="setting"><span data-icon="pitch" class="setting-icon"></span><label>PITCH</label><button class="arrow" data-cycle="pitch" data-dir="-1" aria-label="Previous pitch style">◀</button><span id="pitch-value" class="value">RANDOM</span><button class="arrow" data-cycle="pitch" data-dir="1" aria-label="Next pitch style">▶</button></div>
+          <div class="setting"><span class="setting-icon">☀</span><label>WEATHER</label><button class="arrow" data-cycle="weather" data-dir="-1" aria-label="Previous weather">◀</button><span id="weather-value" class="value">RANDOM</span><button class="arrow" data-cycle="weather" data-dir="1" aria-label="Next weather">▶</button></div>
+          <div class="setting"><span class="setting-icon">☾</span><label>KICKOFF</label><button class="arrow" data-cycle="lighting" data-dir="-1" aria-label="Previous lighting">◀</button><span id="lighting-value" class="value">RANDOM</span><button class="arrow" data-cycle="lighting" data-dir="1" aria-label="Next lighting">▶</button></div>
+          <div class="setting"><span data-icon="fullscreen" class="setting-icon"></span><label>FULLSCREEN</label><button class="toggle" id="fullscreen-toggle" data-action="fullscreen">ENTER</button></div>
+        </div>
+        <div class="panel-footer"><button class="chunk purple" data-action="options-back"><span class="icon" data-icon="back"></span>BACK</button><button class="chunk green" data-action="save"><span class="icon" data-icon="save"></span>SAVE</button></div>
+      </div>
+    </section>
+    <section id="match" class="screen" aria-label="Football match">
+      <div id="scoreboard">
+        <div class="score-team home"><img id="home-flag" alt=""><span id="home-name">ITALY</span></div>
+        <b id="home-score" class="score-number">0</b><div class="clock"><span id="timer">02:30</span><small id="phase">4 VS 4</small></div><b id="away-score" class="score-number away-number">0</b>
+        <div class="score-team away"><span id="away-name">BRAZIL</span><img id="away-flag" alt=""></div>
+      </div>
+      <button id="pause-button" class="pause-button" data-action="pause" aria-label="Pause match"><span data-icon="pause"></span></button>
+      <div id="weather-badge">☀ DAY · SUNNY</div>
+      <div id="banner" class="match-banner" aria-live="polite"></div>
+      <div id="replay-hud" hidden><span><i></i> GOAL REPLAY</span><button class="chunk blue" data-action="skip-replay">SKIP ▸</button></div>
+      <div id="charge-meter" hidden><div class="charge-label"><span id="charge-text">HOLD TO CHARGE</span><small id="overcharge">RELEASE!</small></div><div class="charge-track"><div id="charge-fill"></div><i></i></div></div>
+      <div id="joystick" aria-label="Movement joystick"><span class="joy-arrow up">▲</span><span class="joy-arrow down">▼</span><span class="joy-arrow left">◀</span><span class="joy-arrow right">▶</span><div id="joy-knob"></div></div>
+      <div class="action-buttons"><button id="boost-button" class="round boost" aria-label="Boost: sprint, skill move near a defender"><i id="boost-fill"></i><span>BOOST</span><small>SHIFT</small></button><button id="pass-button" class="round pass" aria-label="Pass or slide tackle">PASS<small>X</small></button><button id="shoot-button" class="round shoot" aria-label="Shoot, switch player or save">SHOOT<small>HOLD FOR POWER</small></button></div>
+      <div id="penalty-hud" hidden>
+        <div class="pen-board">
+          <div class="pen-row"><img id="pen-home-flag" alt=""><span id="pen-home" class="pen-dots"></span><b id="pen-home-score">0</b></div>
+          <div class="pen-row"><img id="pen-away-flag" alt=""><span id="pen-away" class="pen-dots"></span><b id="pen-away-score">0</b></div>
+        </div>
+        <div id="pen-tip"></div>
+        <button id="pen-kick" class="round shoot" hidden>KICK!<small>SPACE</small></button>
+        <div id="pen-dive" hidden><button data-dive="-1">◀ LEFT</button><button data-dive="0">● STAY</button><button data-dive="1">RIGHT ▶</button></div>
+      </div>
+      <div id="keyboard-hint">WASD MOVE • X PASS / TACKLE • SPACE SHOOT / SWITCH • SHIFT BOOST</div>
+    </section>
+    <section id="bracket" class="screen stadium-screen" aria-label="Tournament progression">
+      <h1 class="game-title small-title"><span>MINI</span> SOCCER 3D <b>⚽</b></h1>
+      <h2 class="ribbon"><span data-icon="trophy" class="icon"></span>WORLD CUP</h2>
+      <p id="cup-progress" class="cup-progress">QUARTERFINALS</p>
+      <div id="bracket-grid"></div>
+      <div class="bracket-footer"><button class="chunk slate" data-action="menu">MAIN MENU</button><button class="chunk green" id="cup-next" data-action="cup-next">PLAY QUARTERFINAL</button></div>
+    </section>
+    <section id="celebration" class="screen" aria-label="World champions">
+      <canvas id="confetti" width="1280" height="720" aria-hidden="true"></canvas>
+      <div class="champ-rays" aria-hidden="true"></div>
+      <div class="champ-text"><h1 class="champ-title">WORLD CHAMPIONS</h1><div class="champ-team"><img id="champ-flag" alt=""><span id="champ-name">ITALY</span></div></div>
+      <button class="chunk green champ-next" data-action="celebrate-next">CONTINUE ▸</button>
+    </section>
+    <section id="results" class="screen stadium-screen" aria-label="Match results">
+      <div class="result-panel panel">
+        <span id="result-icon" class="big-trophy">★</span><h2 id="result-title">FULL TIME</h2><p id="result-subtitle">QUICK MATCH</p>
+        <div id="result-score"></div><div id="result-stats"></div>
+        <div class="panel-footer"><button class="chunk slate" data-action="menu">MAIN MENU</button><button class="chunk green" id="result-next" data-action="result-next">REPLAY</button></div>
+      </div>
+    </section>
+    <div id="modal" hidden role="dialog" aria-modal="true">
+      <div class="modal-panel panel"><h2 id="modal-title">PAUSED</h2><div id="modal-body"></div><div id="modal-actions"></div></div>
+    </div>
+    <div id="toast" role="status"></div>
+    <div id="load-error" hidden>YOUR BROWSER NEEDS WEBGL TO PLAY.<br><button onclick="location.reload()">TRY AGAIN</button></div>
+  </main>
+  <script src="js/vendor/three.min.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/renderer.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/portal.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="en"><head><link rel="canonical" href="https://playgama.com/game/chrome-dino-run"><script src="https://games.playgama.net/assets/bootstrap.js?v=10092026"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#f7f7f7">
+    <title>Dino Run</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./css/game.css">
+    <script src="https://bridge.playgama.com/v2/stable/playgama-bridge.js"></script><script>window.bridge || document.write('<script src="./playgama-bridge.js"><\/script>');</script>
+</head>
+<body class="offline">
+    <div id="game-root">
+        <div id="main-frame-error" class="interstitial-wrapper">
+            <div id="main-content">
+                <div class="icon icon-offline" aria-hidden="true"></div>
+            </div>
+        </div>
+
+        <div id="dino-hud">
+            <p id="resume-count" hidden="">1</p>
+            <p id="start-hint">
+                <span id="hint-main">Press space, tap, or click to start</span>
+                <span class="sub" id="hint-sub">Down / hold Duck to dodge birds</span>
+            </p>
+            <div id="revive-panel">
+                <p id="revive-hint">Watch an ad to keep running</p>
+                <div class="actions">
+                    <button type="button" class="primary" id="revive-btn">Continue</button>
+                    <button type="button" id="restart-btn">Restart</button>
+                </div>
+            </div>
+            <button type="button" id="duck-btn">Duck</button>
+        </div>
+    </div>
+
+    <div id="offline-resources">
+        <img id="offline-resources-1x" src="./assets/offline-sprite-1x.png?v=5" alt="">
+        <img id="offline-resources-2x" src="./assets/offline-sprite-2x.png?v=5" alt="">
+        <template id="audio-resources">
+            <audio id="offline-sound-press" src="./assets/sounds/button-press.mp3"></audio>
+            <audio id="offline-sound-hit" src="./assets/sounds/hit.mp3"></audio>
+            <audio id="offline-sound-reached" src="./assets/sounds/score-reached.mp3"></audio>
+        </template>
+    </div>
+
+    <script src="./js/offline.js"></script>
+    <script src="./js/playgama.js"></script>
+
+
+</body></html>

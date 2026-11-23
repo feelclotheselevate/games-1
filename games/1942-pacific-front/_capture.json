@@ -1,0 +1,18 @@
+{
+ "key": "1942-pacific-front",
+ "source": "https://games.builds.gamepix.com/28N4TP/2mEfZJg0M4L6GSt9xxZvyxfSFmj/index.html?sid=1",
+ "entry": "index.html",
+ "query": "?sid=1",
+ "files": 36,
+ "bytes": 71239839,
+ "extraHosts": [
+  "d13m0wt5um9hyu.cloudfront.net"
+ ],
+ "external": {
+  "https://integration.gamepix.com": 1,
+  "https://rt.gamepix.com": 2
+ },
+ "err": null,
+ "secs": 68,
+ "cdnBase": "https://feelclotheselevate.github.io/games-1/games/1942-pacific-front/_cdn/"
+}

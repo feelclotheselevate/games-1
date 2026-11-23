@@ -1,0 +1,27 @@
+{
+ "key": "mini-soccer-3d",
+ "source": "https://html5.gamemonetize.co/ydb5z2mbz7bd4hfks1vdjrqp0vg91a9a/",
+ "entry": "index.html",
+ "query": "",
+ "files": 54,
+ "bytes": 10520338,
+ "extraHosts": [],
+ "external": {
+  "https://api.gamemonetize.com": 4,
+  "https://gamemonetize.com": 3,
+  "https://imasdk.googleapis.com": 3,
+  "https://www.googletagmanager.com": 1,
+  "https://pagead2.googlesyndication.com": 29,
+  "https://s0.2mdn.net": 1,
+  "https://region1.google-analytics.com": 2,
+  "https://pubads.g.doubleclick.net": 1,
+  "https://ep1.adtrafficquality.google": 2,
+  "https://ep2.adtrafficquality.google": 3,
+  "https://fonts.gstatic.com": 1,
+  "https://rr4---sn-4vguioxu-5ui6.googlevideo.com": 1,
+  "https://googleads.g.doubleclick.net": 11,
+  "https://tpc.googlesyndication.com": 2
+ },
+ "err": null,
+ "secs": 41
+}

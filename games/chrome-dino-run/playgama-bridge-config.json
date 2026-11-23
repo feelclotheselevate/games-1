@@ -1,0 +1,45 @@
+{
+    "advertisement": {
+        "minimumDelayBetweenInterstitial": 180,
+        "initialInterstitialDelay": 60,
+        "interstitial": {
+            "disable": false,
+            "preloadOnStart": "game_over",
+            "placementFallback": "game_over",
+            "placements": [
+                {
+                    "id": "game_over"
+                }
+            ],
+            "minimumDelayBetweenInterstitial": 60
+        },
+        "rewarded": {
+            "disable": false,
+            "preloadOnStart": "extra_life",
+            "placementFallback": "extra_life",
+            "placements": [
+                {
+                    "id": "extra_life"
+                }
+            ]
+        }
+    },
+    "saas": {
+        "publicToken": "cmuaze1nr0jxpl70hpspv9nnl"
+    },
+    "payments": [],
+    "device": {
+        "supportedOrientations": [
+            "portrait",
+            "landscape"
+        ]
+    },
+    "platforms": {
+        "playgama": {
+            "name": "Crome Dino Run"
+        }
+    },
+    "sendAnalyticsEvents": true,
+    "disableLoadingLogo": false,
+    "showFullLoadingLogo": true
+}

@@ -1,0 +1,50 @@
+{
+  "name": "1942pacificfront",
+  "version": "4",
+  "symbols": "1",
+  "origin": "c++",
+  "engineVersion": "",
+  "runtime": {
+    "aspectRanges": {
+      "landscape": {
+        "min": 1.29,
+        "max": 2.22
+      }
+    },
+    "responsive": false,
+    "resolutionLimit": 1440,
+    "res": [
+      {
+        "glob": "emscripten/**",
+        "root": "emscripten/"
+      }
+    ]
+  },
+  "backendVersion": 58,
+  "tinyLoaderScript": "https://feelclotheselevate.github.io/games-1/games/1942-pacific-front/_cdn/d13m0wt5um9hyu.cloudfront.net/loader/58.0.0/tiny-loader.js",
+  "sdkScripts": [
+    "https://feelclotheselevate.github.io/games-1/games/1942-pacific-front/_cdn/d13m0wt5um9hyu.cloudfront.net/loader/58.0.0/sdk.js",
+    "https://feelclotheselevate.github.io/games-1/games/1942-pacific-front/_cdn/d13m0wt5um9hyu.cloudfront.net/loader/58.0.0/gamepix-adapter.js"
+  ],
+  "workerScripts": {
+    "browserImageLoader": "https://feelclotheselevate.github.io/games-1/games/1942-pacific-front/_cdn/d13m0wt5um9hyu.cloudfront.net/loader/58.0.0/browser-image-loader.js",
+    "wasmImageLoader": {
+      "wasm": "https://feelclotheselevate.github.io/games-1/games/1942-pacific-front/_cdn/d13m0wt5um9hyu.cloudfront.net/loader/58.0.0/wasm-image-loader.wasm",
+      "wasmJs": "https://feelclotheselevate.github.io/games-1/games/1942-pacific-front/_cdn/d13m0wt5um9hyu.cloudfront.net/loader/58.0.0/wasm-image-loader.js"
+    }
+  },
+  "sizes": {
+    "br/bin.data.js.br": 8702,
+    "br/bin.data._.js.br": 4458905,
+    "br/wbin.js.br": 49165,
+    "br/wbin._.js.br": 979092,
+    "gz/bin.data.js.gz": 11337,
+    "gz/bin.data._.js.gz": 5421103,
+    "gz/wbin.js.gz": 56971,
+    "gz/wbin._.js.gz": 1420264,
+    "wbin.js": 219130,
+    "wbin._.js": 5944823,
+    "bin.data.js": 73505,
+    "bin.data._.js": 13678964
+  }
+}

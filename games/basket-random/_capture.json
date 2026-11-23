@@ -1,0 +1,17 @@
+{
+ "key": "basket-random",
+ "source": "https://basket-random.games.playgama.net/cmv6qibpy00pln40h7tdnuhs6/__patch__/cmvani26401h5mq0h9nw9ihie/index.html?platform_id=playgama",
+ "entry": "index.html",
+ "query": "?platform_id=playgama",
+ "files": 78,
+ "bytes": 3386453,
+ "extraHosts": [],
+ "external": {
+  "https://games.playgama.net": 1,
+  "https://bridge.playgama.com": 2,
+  "https://playgama.com": 1,
+  "https://api.playgama.com": 1
+ },
+ "err": null,
+ "secs": 30
+}

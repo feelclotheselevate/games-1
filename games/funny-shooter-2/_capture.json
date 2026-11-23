@@ -1,0 +1,14 @@
+{
+ "key": "funny-shooter-2",
+ "source": "https://games.builds.gamepix.com/VXGWI7/2qQo56NJ8W1hQiaM20juP15zrk6/index.html?sid=1",
+ "entry": "index.html",
+ "query": "?sid=1",
+ "files": 8,
+ "bytes": 34255248,
+ "extraHosts": [],
+ "external": {
+  "https://integration.gamepix.com": 1
+ },
+ "err": null,
+ "secs": 59
+}

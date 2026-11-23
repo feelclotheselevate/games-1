@@ -1,0 +1,16 @@
+{
+ "key": "moto-x3m",
+ "source": "https://moto-x3m.games.playgama.com/cmd4beqbt0032l20h91mvtgv8/index.html?platform_id=playgama",
+ "entry": "index.html",
+ "query": "?platform_id=playgama",
+ "files": 77,
+ "bytes": 10711870,
+ "extraHosts": [],
+ "external": {
+  "https://games.playgama.net": 1,
+  "https://developer.playgama.com": 1,
+  "https://playgama.com": 1
+ },
+ "err": null,
+ "secs": 27
+}

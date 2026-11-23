@@ -1,0 +1,17 @@
+{
+ "key": "solar-smash",
+ "source": "https://solar-smash.games.playgama.com/cmnq11in800xxia0hfcpn6aci/index.html?platform_id=playgama",
+ "entry": "index.html",
+ "query": "?platform_id=playgama",
+ "files": 8,
+ "bytes": 108499571,
+ "extraHosts": [],
+ "external": {
+  "https://games.playgama.net": 1,
+  "https://bridge.playgama.com": 2,
+  "https://playgama.com": 1,
+  "https://api.playgama.com": 1
+ },
+ "err": null,
+ "secs": 59
+}

@@ -1,0 +1,21 @@
+{
+ "key": "steel-directive-city-zero",
+ "source": "https://html5.gamemonetize.co/2htlt0jzz98u493u3z9jt9wsykiqtv0a/",
+ "entry": "index.html",
+ "query": "",
+ "files": 88,
+ "bytes": 28805225,
+ "extraHosts": [],
+ "external": {
+  "https://api.gamemonetize.com": 1,
+  "https://gamemonetize.com": 2,
+  "https://imasdk.googleapis.com": 2,
+  "https://www.googletagmanager.com": 1,
+  "https://pagead2.googlesyndication.com": 1,
+  "https://s0.2mdn.net": 1,
+  "https://region1.google-analytics.com": 2,
+  "https://pubads.g.doubleclick.net": 1
+ },
+ "err": null,
+ "secs": 38
+}

@@ -1,0 +1,726 @@
+'use strict'
+
+const C3 = globalThis.C3
+{
+    C3.Plugins.PlaygamaBridge.Acts = {
+        // action parameters
+        AddActionParameter(key, value) {
+            this.setObjectValue(key, value, this.actionParametersContainer, true)
+        },
+        AddBoolActionParameter(key, value) {
+            this.setObjectValue(key, value, this.actionParametersContainer, true)
+        },
+
+
+        // platform
+        SendMessage(message) {
+            switch (message) {
+                case 0:
+                    message = window.bridge.PLATFORM_MESSAGE.GAME_READY
+                    break
+                case 1:
+                    message = window.bridge.PLATFORM_MESSAGE.IN_GAME_LOADING_STARTED
+                    break
+                case 2:
+                    message = window.bridge.PLATFORM_MESSAGE.IN_GAME_LOADING_STOPPED
+                    break
+                case 3:
+                    message = window.bridge.PLATFORM_MESSAGE.GAMEPLAY_STARTED
+                    break
+                case 4:
+                    message = window.bridge.PLATFORM_MESSAGE.GAMEPLAY_STOPPED
+                    break
+                case 5:
+                    message = window.bridge.PLATFORM_MESSAGE.PLAYER_GOT_ACHIEVEMENT
+                    break
+                case 6:
+                    message = window.bridge.PLATFORM_MESSAGE.LEVEL_STARTED
+                    break
+                case 7:
+                    message = window.bridge.PLATFORM_MESSAGE.LEVEL_COMPLETED
+                    break
+                case 8:
+                    message = window.bridge.PLATFORM_MESSAGE.LEVEL_FAILED
+                    break
+                case 9:
+                    message = window.bridge.PLATFORM_MESSAGE.LEVEL_PAUSED
+                    break
+                case 10:
+                    message = window.bridge.PLATFORM_MESSAGE.LEVEL_RESUMED
+                    break
+            }
+
+            window.bridge.platform.sendMessage(message, this.actionParametersContainer)
+            this.actionParametersContainer = {}
+        },
+        SendCustomMessage(id) {
+            window.bridge.platform.sendCustomMessage(id, this.actionParametersContainer)
+            this.actionParametersContainer = {}
+        },
+
+
+        // analytics
+        SendAnalyticsEvent(eventName) {
+            window.bridge.analytics.send(eventName, this.actionParametersContainer)
+            this.actionParametersContainer = {}
+        },
+        GetServerTime() {
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.platform.getServerTime()
+                    .then(result => {
+                        this.isLastActionCompletedSuccessfully = true
+                        this.serverTime = result
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this._trigger(this.conditions.OnGetServerTimeCompleted)
+                        resolve()
+                    })
+            })
+        },
+        // player
+        AuthorizePlayer() {
+            this.isLastActionCompletedSuccessfully = false
+            return new Promise(resolve => {
+                window.bridge.player.authorize(this.actionParametersContainer)
+                    .then(() => {
+                        this.isLastActionCompletedSuccessfully = true
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this.actionParametersContainer = {}
+                        this._trigger(this.conditions.OnAuthorizePlayerCompleted)
+                        resolve()
+                    })
+            })
+        },
+
+
+        // storage
+        AppendStorageDataGetRequest(key) {
+            this.storageDataGetRequestKeys.push(key)
+        },
+        SendStorageDataGetRequest() {
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.storage.get(this.storageDataGetRequestKeys)
+                    .then(data => {
+                        if (!this.storageData) {
+                            this.storageData = {}
+                        }
+
+                        for (let i = 0; i < data.length; i++) {
+                            let key = this.storageDataGetRequestKeys[i]
+                            let value = data[i]
+                            this.storageData[key] = value
+                        }
+
+                        this.isLastActionCompletedSuccessfully = true
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this.storageDataGetRequestKeys = []
+                        this._trigger(this.conditions.OnStorageDataGetRequestCompleted)
+                        resolve()
+                    })
+            })
+        },
+        AppendStorageDataSetRequest(key, value) {
+            this.storageDataSetRequestKeys.push(key)
+            this.storageDataSetRequestValues.push(value)
+        },
+        SendStorageDataSetRequest() {
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.storage.set(this.storageDataSetRequestKeys, this.storageDataSetRequestValues)
+                    .then(() => {
+                        if (!this.storageData) {
+                            this.storageData = {}
+                        }
+
+                        for (let i = 0; i < this.storageDataSetRequestKeys.length; i++) {
+                            let key = this.storageDataSetRequestKeys[i]
+                            this.storageData[key] = this.storageDataSetRequestValues[i]
+                        }
+
+                        this.isLastActionCompletedSuccessfully = true
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this.storageDataSetRequestKeys = []
+                        this.storageDataSetRequestValues = []
+                        this._trigger(this.conditions.OnStorageDataSetRequestCompleted)
+                        resolve()
+                    })
+            })
+        },
+        AppendStorageDataDeleteRequest(key) {
+            this.storageDataDeleteRequestKeys.push(key)
+        },
+        SendStorageDataDeleteRequest() {
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.storage.delete(this.storageDataDeleteRequestKeys)
+                    .then(() => {
+                        if (this.storageData) {
+                            for (let i = 0; i < this.storageDataDeleteRequestKeys.length; i++) {
+                                let key = this.storageDataDeleteRequestKeys[i]
+                                delete this.storageData[key]
+                            }
+                        }
+
+                        this.isLastActionCompletedSuccessfully = true
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this.storageDataDeleteRequestKeys = []
+                        this._trigger(this.conditions.OnStorageDataDeleteRequestCompleted)
+                        resolve()
+                    })
+            })
+        },
+
+
+        // advertisement
+        SetMinimumDelayBetweenInterstitial(seconds) {
+            window.bridge.advertisement.setMinimumDelayBetweenInterstitial(seconds)
+        },
+        ShowBanner(position, placement) {
+            window.bridge.advertisement.showBanner(position, placement)
+        },
+        HideBanner() {
+            window.bridge.advertisement.hideBanner()
+        },
+        ShowAdvancedBanners(placement) {
+            window.bridge.advertisement.showAdvancedBanners(placement)
+        },
+        HideAdvancedBanners() {
+            window.bridge.advertisement.hideAdvancedBanners()
+        },
+        ShowInterstitial(placement) {
+            window.bridge.advertisement.showInterstitial(placement)
+        },
+        ShowRewarded(placement) {
+            window.bridge.advertisement.showRewarded(placement)
+        },
+        CheckAdBlock() {
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.advertisement.checkAdBlock()
+                    .then(result => {
+                        this.isLastActionCompletedSuccessfully = true
+                        this.isAdBlockDetected = result
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this._trigger(this.conditions.OnCheckAdBlockCompleted)
+                        resolve()
+                    })
+            })
+        },
+
+
+        // social
+        // Share, InviteFriends and CreatePost send the id of a config entry
+        // (social.shares, social.invites, social.posts). JoinCommunity reads social.joinCommunity.
+        Share(id) {
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.social.share(id || undefined)
+                    .then(() => {
+                        this.isLastActionCompletedSuccessfully = true
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this._trigger(this.conditions.OnShareCompleted)
+                        resolve()
+                    })
+            })
+        },
+        InviteFriends(id) {
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.social.inviteFriends(id || undefined)
+                    .then(() => {
+                        this.isLastActionCompletedSuccessfully = true
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this._trigger(this.conditions.OnInviteFriendsCompleted)
+                        resolve()
+                    })
+            })
+        },
+        JoinCommunity() {
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.social.joinCommunity()
+                    .then(() => {
+                        this.isLastActionCompletedSuccessfully = true
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this._trigger(this.conditions.OnJoinCommunityCompleted)
+                        resolve()
+                    })
+            })
+        },
+        CreatePost(id, payload) {
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.social.createPost(id || undefined, payload || undefined)
+                    .then(() => {
+                        this.isLastActionCompletedSuccessfully = true
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this._trigger(this.conditions.OnCreatePostCompleted)
+                        resolve()
+                    })
+            })
+        },
+        AddToHomeScreen() {
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.social.addToHomeScreen()
+                    .then(() => {
+                        this.isLastActionCompletedSuccessfully = true
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this._trigger(this.conditions.OnAddToHomeScreenCompleted)
+                        resolve()
+                    })
+            })
+        },
+        AddToFavorites() {
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.social.addToFavorites()
+                    .then(() => {
+                        this.isLastActionCompletedSuccessfully = true
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this._trigger(this.conditions.OnAddToFavoritesCompleted)
+                        resolve()
+                    })
+            })
+        },
+        Rate() {
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.social.rate()
+                    .then(() => {
+                        this.isLastActionCompletedSuccessfully = true
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this._trigger(this.conditions.OnRateCompleted)
+                        resolve()
+                    })
+            })
+        },
+        GetPostReward() {
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.social.getPostReward()
+                    .then(rewards => {
+                        this.postRewards = rewards || []
+                        this.isLastActionCompletedSuccessfully = true
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this._trigger(this.conditions.OnGetPostRewardCompleted)
+                        resolve()
+                    })
+            })
+        },
+
+
+        // leaderboards
+        LeaderboardsSetScore(id, score) {
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.leaderboards.setScore(id, score)
+                    .then(() => {
+                        this.isLastActionCompletedSuccessfully = true
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this._trigger(this.conditions.OnLeaderboardsSetScoreCompleted)
+                        resolve()
+                    })
+            })
+        },
+        LeaderboardsGetEntries(id) {
+            this.leaderboardEntries = null
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.leaderboards.getEntries(id)
+                    .then(entries => {
+                        this.leaderboardEntries = entries
+                        this.isLastActionCompletedSuccessfully = true
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this._trigger(this.conditions.OnLeaderboardsGetEntriesCompleted)
+                        resolve()
+                    })
+            })
+        },
+        LeaderboardsShowNativePopup(id) {
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.leaderboards.showNativePopup(id)
+                    .then(() => {
+                        this.isLastActionCompletedSuccessfully = true
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this._trigger(this.conditions.OnLeaderboardsShowNativePopupCompleted)
+                        resolve()
+                    })
+            })
+        },
+
+
+        // payments
+        PaymentsPurchase(id) {
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.payments.purchase(id, this.actionParametersContainer)
+                    .then(data => {
+                        this.isLastActionCompletedSuccessfully = true
+                        this.paymentsPurchase = data
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this.actionParametersContainer = {}
+                        this._trigger(this.conditions.OnPaymentsPurchaseCompleted)
+                        resolve()
+                    })
+            })
+        },
+
+        PaymentsConsumePurchase(id) {
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.payments.consumePurchase(id)
+                    .then((data) => {
+                        this.isLastActionCompletedSuccessfully = true
+                        this.paymentsPurchase = data
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this._trigger(this.conditions.OnPaymentsConsumePurchaseCompleted)
+                        resolve()
+                    })
+            })
+        },
+
+        PaymentsGetCatalog() {
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.payments.getCatalog()
+                    .then(data => {
+                        this.isLastActionCompletedSuccessfully = true
+                        this.paymentsCatalog = data
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this._trigger(this.conditions.OnPaymentsGetCatalogCompleted)
+                        resolve()
+                    })
+            })
+        },
+
+        PaymentsGetPurchases() {
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.payments.getPurchases()
+                    .then(data => {
+                        this.isLastActionCompletedSuccessfully = true
+                        this.paymentsPurchases = data
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this._trigger(this.conditions.OnPaymentsGetPurchasesCompleted)
+                        resolve()
+                    })
+            })
+        },
+
+
+        // achievements
+        AchievementsUnlock(id) {
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.achievements.unlock(id)
+                    .then(() => {
+                        this.isLastActionCompletedSuccessfully = true
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this._trigger(this.conditions.OnAchievementsUnlockCompleted)
+                        resolve()
+                    })
+            })
+        },
+
+        AchievementsGetList() {
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.achievements.getAchievements()
+                    .then(data => {
+                        this.isLastActionCompletedSuccessfully = true
+                        this.achievementsList = data
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this._trigger(this.conditions.OnAchievementsGetListCompleted)
+                        resolve()
+                    })
+            })
+        },
+
+
+        // remote-config
+        SendRemoteConfigGetRequest() {
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.remoteConfig.setContext(this.actionParametersContainer)
+                window.bridge.remoteConfig.get()
+                    .then(data => {
+                        this.isLastActionCompletedSuccessfully = true
+                        this.remoteConfig = data
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this.actionParametersContainer = {}
+                        this._trigger(this.conditions.OnRemoteConfigGotCompleted)
+                        resolve()
+                    })
+            })
+        },
+
+
+        // cross-promo
+        CrossPromoGetGamesList() {
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.crossPromo.getGames()
+                    .then((games) => {
+                        this.isLastActionCompletedSuccessfully = true
+                        this.crossPromoGames = games
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this._trigger(this.conditions.OnCrossPromoGetGamesListCompleted)
+                        resolve()
+                    })
+            })
+        },
+        CrossPromoShow() {
+            window.bridge.crossPromo.show()
+        },
+        CrossPromoHide() {
+            window.bridge.crossPromo.hide()
+        },
+
+
+        // tasks
+        TasksGetTasks() {
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.tasks.getTasks()
+                    .then(data => {
+                        this.isLastActionCompletedSuccessfully = true
+                        this.tasksList = data
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this._trigger(this.conditions.OnTasksGetTasksCompleted)
+                        resolve()
+                    })
+            })
+        },
+
+        TasksAddProgress(metric, amount) {
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.tasks.addProgress(metric, amount)
+                    .then(() => {
+                        this.isLastActionCompletedSuccessfully = true
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this._trigger(this.conditions.OnTasksAddProgressCompleted)
+                        resolve()
+                    })
+            })
+        },
+
+        TasksClaimReward(taskId) {
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.tasks.claimReward(taskId)
+                    .then(claimed => {
+                        this.isLastActionCompletedSuccessfully = claimed === true
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this._trigger(this.conditions.OnTasksClaimRewardCompleted)
+                        resolve()
+                    })
+            })
+        },
+
+
+        // daily rewards
+        DailyRewardsGetRewards() {
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.dailyRewards.getRewards()
+                    .then(data => {
+                        this.isLastActionCompletedSuccessfully = true
+                        this.dailyRewardsList = data
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this._trigger(this.conditions.OnDailyRewardsGetRewardsCompleted)
+                        resolve()
+                    })
+            })
+        },
+
+        DailyRewardsGetCurrentDay() {
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.dailyRewards.getCurrentDay()
+                    .then(day => {
+                        this.isLastActionCompletedSuccessfully = true
+                        this.dailyRewardsCurrentDay = day
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this._trigger(this.conditions.OnDailyRewardsGetCurrentDayCompleted)
+                        resolve()
+                    })
+            })
+        },
+
+        DailyRewardsGetCurrentReward() {
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.dailyRewards.getCurrentReward()
+                    .then(reward => {
+                        this.isLastActionCompletedSuccessfully = true
+                        this.dailyRewardsCurrentReward = reward
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this._trigger(this.conditions.OnDailyRewardsGetCurrentRewardCompleted)
+                        resolve()
+                    })
+            })
+        },
+
+        DailyRewardsClaimCurrentReward() {
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.dailyRewards.claimCurrentReward()
+                    .then(claimed => {
+                        this.isLastActionCompletedSuccessfully = claimed === true
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this._trigger(this.conditions.OnDailyRewardsClaimCurrentRewardCompleted)
+                        resolve()
+                    })
+            })
+        },
+
+        // notifications
+        NotificationsSchedule() {
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.notifications.schedule(this.actionParametersContainer)
+                    .then(() => {
+                        this.isLastActionCompletedSuccessfully = true
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this.actionParametersContainer = {}
+                        this._trigger(this.conditions.OnNotificationsScheduleCompleted)
+                        resolve()
+                    })
+            })
+        },
+
+        NotificationsCancel(id) {
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.notifications.cancel(id)
+                    .then(() => {
+                        this.isLastActionCompletedSuccessfully = true
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this._trigger(this.conditions.OnNotificationsCancelCompleted)
+                        resolve()
+                    })
+            })
+        },
+
+        NotificationsCancelAll() {
+            this.isLastActionCompletedSuccessfully = false
+
+            return new Promise(resolve => {
+                window.bridge.notifications.cancelAll()
+                    .then(() => {
+                        this.isLastActionCompletedSuccessfully = true
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => {
+                        this._trigger(this.conditions.OnNotificationsCancelAllCompleted)
+                        resolve()
+                    })
+            })
+        },
+    }
+}

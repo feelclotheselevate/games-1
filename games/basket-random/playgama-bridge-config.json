@@ -1,0 +1,58 @@
+{
+    "$schema": "https://bridge.playgama.com/v1.27.0/schema.json",
+    "sendAnalyticsEvents": true,
+    "disableLoadingLogo": false,
+    "showFullLoadingLogo": true,
+    "device": {
+        "useBuiltInOrientationPopup": true,
+        "supportedOrientations": [
+            "portrait",
+            "landscape"
+        ]
+    },
+    "advertisement": {
+        "useBuiltInErrorPopup": true,
+        "minimumDelayBetweenInterstitial": 60000,
+        "interstitial": {
+            "preloadOnStart": true,
+            "placementFallback": "default",
+            "placements": [
+                {
+                    "id": "default"
+                },
+                {
+                    "id": "level_complete"
+                },
+                {
+                    "id": "game_over"
+                }
+            ],
+            "minimumDelayBetweenInterstitial": 60
+        },
+        "rewarded": {
+            "preloadOnStart": true,
+            "placementFallback": "rewarded_default",
+            "placements": [
+                {
+                    "id": "rewarded_default"
+                },
+                {
+                    "id": "rewarded_coins"
+                },
+                {
+                    "id": "rewarded_revive"
+                }
+            ]
+        }
+    },
+    "payments": [],
+    "leaderboards": [],
+    "saas": {
+        "publicToken": "cmogvb5lf0197o50hc5yqnf8s"
+    },
+    "platforms": {
+        "playgama": {
+            "name": "Basket Random"
+        }
+    }
+}

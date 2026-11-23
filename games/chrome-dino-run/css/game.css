@@ -1,0 +1,243 @@
+/* Layout around Chromium's T-Rex runner. Sprite art and game CSS
+   remain based on Chromium (BSD). */
+
+html, body {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  background: #f7f7f7;
+  color: #535353;
+  font-family: "Courier New", Courier, monospace;
+  overflow: hidden;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body.inverted {
+  background: #fff;
+  filter: invert(1);
+}
+
+#game-root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.icon {
+  -webkit-user-select: none;
+  user-select: none;
+  display: inline-block;
+}
+
+.icon-offline {
+  position: relative;
+  width: 44px;
+  height: 47px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.offline .interstitial-wrapper {
+  color: #535353;
+  font-size: 1em;
+  line-height: 1.55;
+  margin: 0 auto;
+  max-width: 600px;
+  padding-top: 0;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.offline .runner-container {
+  height: 150px;
+  max-width: 600px;
+  overflow: hidden;
+  position: absolute;
+  top: 35px;
+  width: 600px;
+}
+
+.offline .runner-canvas {
+  height: 150px;
+  max-width: 600px;
+  opacity: 1;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  z-index: 2;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.offline .controller {
+  background: transparent;
+  height: 100vh;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  z-index: 1;
+}
+
+#offline-resources {
+  display: none;
+}
+
+.arcade-mode,
+.arcade-mode .runner-container,
+.arcade-mode .runner-canvas {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  max-width: none;
+  overflow: visible;
+}
+
+.arcade-mode .interstitial-wrapper {
+  height: 100vh;
+  max-width: 100%;
+  overflow: visible;
+}
+
+.arcade-mode .runner-container {
+  left: 50%;
+  top: 52%;
+  margin: 0;
+  right: auto;
+  transform-origin: center center;
+  z-index: 2;
+}
+
+#dino-hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 24px 16px calc(24px + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+}
+
+#resume-count {
+  position: absolute;
+  top: 18%;
+  left: 0;
+  right: 0;
+  margin: 0;
+  text-align: center;
+  font-size: clamp(72px, 16vw, 140px);
+  line-height: 1;
+  letter-spacing: 0;
+  color: #535353;
+  pointer-events: none;
+  z-index: 6;
+}
+
+#resume-count[hidden] {
+  display: none !important;
+}
+
+#start-hint {
+  position: absolute;
+  top: 18%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: clamp(14px, 2.4vw, 20px);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #535353;
+  pointer-events: none;
+}
+
+#start-hint .sub {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.75em;
+  letter-spacing: 0.04em;
+  opacity: 0.7;
+  text-transform: none;
+}
+
+#revive-panel {
+  pointer-events: auto;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8vh;
+  text-align: center;
+}
+
+#revive-panel.visible {
+  display: flex;
+}
+
+#revive-panel p {
+  margin: 0;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+}
+
+#revive-panel .actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+#dino-hud button {
+  pointer-events: auto;
+  font-family: inherit;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #535353;
+  background: #f7f7f7;
+  border: 2px solid #535353;
+  padding: 10px 16px;
+  cursor: pointer;
+  image-rendering: pixelated;
+}
+
+#dino-hud button:active {
+  transform: translateY(1px);
+}
+
+#dino-hud button.primary {
+  background: #535353;
+  color: #f7f7f7;
+}
+
+#duck-btn {
+  display: none;
+  position: absolute;
+  right: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  pointer-events: auto;
+  min-width: 88px;
+}
+
+body.is-touch.playing #duck-btn {
+  display: block;
+}
+
+body.playing #start-hint,
+body.crashed #start-hint {
+  display: none;
+}
+
+@media (max-height: 420px) {
+  #start-hint {
+    top: 8%;
+  }
+}
